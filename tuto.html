@@ -1,0 +1,260 @@
+<head>
+  <style>
+    body {
+      font-size: 18px;
+      background-color: black;
+      h1{
+      text-align: center;
+      }
+      a{
+        color: black;
+      }
+
+    .container {
+      background-color: white;
+      margin: auto;
+      width:75%;
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .chapter {
+      width: 90%;
+      box-sizing: content-box;
+      box-shadow: lightgrey 4px 4px 7px;
+      border: 4px solid lightgrey;
+      h2, h3{
+        text-align: center;
+      }
+
+      li {
+        margin: 20px 10px
+      }
+
+    code, pre, code pre {
+      background-color: beige;
+      white-space: pre-line;
+      word-wrap: break-word
+    }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1><a href="https://openclassrooms.com/fr/courses/7471261-debutez-avec-angular">Angular(1)</a></h1>
+    <div class="chapter">
+
+      <h2> Installer les dépendances</h2>
+      <ul>
+        <li>
+          Installation node : <a href="https://nodejs.org/fr/,">nodejs.org</a>
+        </li>
+        <li>
+          Angular cli :
+          <pre><code>npm i -g @angular/cli</code></pre>
+        </li>
+        <li>
+          version de la cli :
+          <pre><code>ng v</code></pre>
+        </li>
+      </ul>
+    </div>
+
+    <div class="chapter">
+      <h2>Construire une application avec la cli</h2>
+      <ul>
+        <li>
+          Nouvelle application angular :
+          <pre><code>ng new snapface --style=scss --skip-tests=true</code></pre>
+        </li>
+        <li>
+          lancer l'application :
+          <pre><code>ng serve</code></pre>
+        </li>
+        <li>
+          index.html contient uniquement le composant racine de l'application désigné par la balise
+          <pre><code>&lt;app-root&gt;&lt;/app-root&gt;</code></pre>
+        </li>
+      </ul>
+    </div>
+    <div class="chapter">
+      <h2>Construire un component</h2>
+      <ul>
+        <li>
+          <pre><code>ng g c nom-de-mon-composant</code></pre>
+        </li>
+        <li>Template html + style.scss + component.ts</li>
+        <li>
+          selector : balise pour utiliser le component
+        </li>
+        <li>
+          Les components sont déclarés dans app.module.ts
+        </li>
+      </ul>
+    </div>
+    <div class="chapter">
+      <h2>Construire un component 2</h2>
+      <ul>
+        <li>
+          On déclare les propriétés d'un component en haut de sa classe, et on les initialise dans la méthode  ngOnInit()
+        </li>
+        <li>
+          La méthode  ngOnInit()  est appelée une fois par instance de component au moment de la création de cette instance.
+        </li>
+        <li>
+          La string interpolation avec les doubles accolades  {{ }}  permet d'insérer la valeur d'une propriété TypeScript dans le template.
+        </li>
+        <li>
+          L'attribute binding permet de lier la valeur d'une propriété TypeScript à un attribut HTML, en mettant l'attribut entre crochets  []  et en passant le nom de la propriété.
+        </li>
+      </ul>
+    </div>
+    <div class="chapter">
+      <h2>Construire un component 3</h2>
+      <ul>
+        <li>
+          Event binding :
+          <pre><code>(click)="onClickButton()"</code></pre>
+        </li>
+        <li>
+          input et attribute binding :
+        <li>
+          <pre><code>@Input() myProp!: MyType;</code></pre>
+          <pre><code> &lt;app-my-component [myProp]="value"&gt;&lt;/app-my-component&gt;</code></pre>
+        </li>
+        <li>
+          Création de models
+        </li>
+      </ul>
+    </div>
+    <div class="chapter">
+      <h2> Directives </h2>
+      <ul>
+        <li>
+          Pour conditioner la création d'un élément du dom :
+          <pre><code>&lt;p *ngIf="size === 'large'"&gt;</code></pre>
+        </li>
+        <li>
+          Ajouter des éléments au dom en itérant sur une collection
+          <pre><code>&lt;p *ngFor="let element of array" [myProp]="element"&gt;{{element.title}}&lt;/p&gt;</code></pre>
+        </li>
+        <li>
+          Appliquer un style dynamique :
+          <pre><code>&lt;span [ngStyle]="{ color: 'rgb(0, ' + counter + ', 0)' }"&gt; {{ counter }}&lt;/span&gt;</code></pre>
+        </li>
+        Conditionner l'application d 'une classe css :
+        <li><pre><code>&lt;div [ngClass]="{ 'class-name': condition }"&gt;&lt;/div&gt;</code></pre></li>
+      </ul>
+    </div>
+    <div class="chapter">
+      <h2>Pipes</h2>
+      <ul>
+        <li><code>&lt;h2&gt;{{ string| uppercase }}&lt;/h2&gt;</code></li>
+        <li> uppercase</li>
+        <li> lowercase</li>
+        <li> titleCase</li>
+        <li> <a href="https://angular.io/api/common/DatePipe">date pipe</a> <pre><code>{{string | date: 'à HH:mm, le d MMMM yyyy' }}</code></pre></li>
+        <li> <a href="https://openclassrooms.com/fr/courses/7471261-debutez-avec-angular/7549366-formatez-les-dates">locales</a></li>
+        <li>CurrencyPipe , PercentPipe , DecimalPipe </li>
+        <a href="https://angular.io/api/common#pipes">Documentation angular</a>
+      </ul>
+    </div>
+    <div class="chapter">
+      <h2>Services, injection de dépendance</h2>
+      <ul>
+        <li><strong>DRY</strong> : "don't repeat yourself'. "Création de service pour encapsuler la logique réutilisable</li>
+        <li>Rendre le service "injectable"
+        <pre><code>@Injectable({providedIn:'root'})</code></pre></li>
+        <li>Injection de dépendance par constructeur dans les components (<strong>private</strong>)</li>
+        <li>utilisation des "literal type" (~enum) ex :fileType: 'image' | 'video'</li>
+      </ul>
+    </div>
+    <div class="chapter">
+      <h2>Routing, SPA</h2>
+      <ul>
+        <li>
+          Creation du module de routing : app-routing-module.ts
+          
+            <code>
+              <pre>
+              import { NgModule } from '@angular/core';
+              import { Routes } from '@angular/router';
+
+              const routes: Routes = [
+
+              ];
+
+              @NgModule()
+              export class AppRoutingModule {}
+              </pre>
+            </code>
+          
+        </li>
+        <li>
+          Routing d'un component :
+          <code>
+            <pre>
+            const routes: Routes = [
+            { path: 'myComponent', component: MyComponent },
+            { path: '', component: LandingPageComponent}
+            ];
+            </pre>
+          </code>
+        </li>
+        <li>
+          <code>
+            <pre>
+            @NgModule({
+              imports: [
+                RouterModule.forRoot(routes)
+              ],
+              exports: [
+                RouterModule
+              ]
+            })
+            </pre>
+          </code>
+        </li>
+        <li>
+          Dans le template d'AppComponent :
+          <code>&lt;router-outlet&gt;&lt;/router-outlet&gt;</code>
+        </li>
+      </ul>
+    </div>
+    <div class="chapter">
+      <h2>Navigation</h2>
+      <ul>
+        <li>
+          Dans le template :
+          <code>&lt;a routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"&gt;Home&lt;/a&gt;</code>
+        </li>
+        <li>
+          Programmatiquement : injection du router &
+          <code>router.navigateByUrl(componentPath)</code>
+        </li>
+      </ul>
+    </div>
+    <div class="chapter">
+      <h2>Activated Route</h2>
+      <h3>(PathParameter) </h3>
+      <ul>
+        <li>
+          <code>
+            const routes: Routes = [
+            { path: 'path/:id', component: MyComponent },
+            ...
+            ];
+          </code>
+        </li>
+        <li>
+          récupération des paramètres de routes : injection du router &
+          <code>const id = +this.route.snapshot.params['id'];</code>
+
+        </li>
+      </ul>
+    </div>
+  </div>
+</body>
