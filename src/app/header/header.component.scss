@@ -18,3 +18,12 @@ a {
   color: #666;
   text-decoration: underline;
 }
+button {
+  margin: 10px 0;
+
+  &:hover {
+    box-sizing: content-box;
+    box-shadow: grey 2px 2px 20px;
+    font-weight: 700;
+  }
+}

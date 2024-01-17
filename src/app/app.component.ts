@@ -1,13 +1,12 @@
-import { Component,OnInit } from '@angular/core';
-import { FaceSnap } from './models/face-snap-model';
+import { Component, OnInit } from "@angular/core";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+    selector: "app-root",
+    templateUrl: "./app.component.html",
+    styleUrls: ["./app.component.scss"],
 })
-export class AppComponent implements OnInit{
-  ngOnInit(): void {
-  }
-
+export class AppComponent implements OnInit {
+    ngOnInit(): void {
+        // TODO document why this method 'ngOnInit' is empty
+    }
 }

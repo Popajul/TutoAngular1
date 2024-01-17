@@ -3,43 +3,45 @@
     body {
       font-size: 18px;
       background-color: black;
-      h1{
-      text-align: center;
-      }
-      a{
-        color: black;
-      }
-
-    .container {
-      background-color: white;
-      margin: auto;
-      width:75%;
-      display: flex;
-      flex-direction: column;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .chapter {
-      width: 90%;
-      box-sizing: content-box;
-      box-shadow: lightgrey 4px 4px 7px;
-      border: 4px solid lightgrey;
-      h2, h3{
+      h1 {
         text-align: center;
       }
-
-      li {
-        margin: 20px 10px
+      a {
+        color: black;
+      }
+    }
+      .container {
+        background-color: white;
+        margin: auto;
+        width: 75%;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 20px;
       }
 
-    code, pre, code pre {
-      background-color: beige;
-      white-space: pre-line;
-      word-wrap: break-word
-    }
-    }
+      .chapter {
+        width: 90%;
+        box-sizing: content-box;
+        box-shadow: lightgrey 4px 4px 7px;
+        border: 4px solid lightgrey;
+
+        h2,h3 {
+          text-align: center;
+        }
+
+        li {
+          margin: 20px 10px
+        }
+
+        code, pre, code pre {
+          background-color: beige;
+          white-space: pre-line;
+          word-wrap: break-word
+        }
+      }
+    
   </style>
 </head>
 <body>
@@ -166,8 +168,10 @@
       <h2>Services, injection de dépendance</h2>
       <ul>
         <li><strong>DRY</strong> : "don't repeat yourself'. "Création de service pour encapsuler la logique réutilisable</li>
-        <li>Rendre le service "injectable"
-        <pre><code>@Injectable({providedIn:'root'})</code></pre></li>
+        <li>
+          Rendre le service "injectable"
+          <pre><code>@Injectable({providedIn:'root'})</code></pre>
+        </li>
         <li>Injection de dépendance par constructeur dans les components (<strong>private</strong>)</li>
         <li>utilisation des "literal type" (~enum) ex :fileType: 'image' | 'video'</li>
       </ul>
@@ -177,9 +181,9 @@
       <ul>
         <li>
           Creation du module de routing : app-routing-module.ts
-          
-            <code>
-              <pre>
+
+          <code>
+            <pre>
               import { NgModule } from '@angular/core';
               import { Routes } from '@angular/router';
 
@@ -190,8 +194,8 @@
               @NgModule()
               export class AppRoutingModule {}
               </pre>
-            </code>
-          
+          </code>
+
         </li>
         <li>
           Routing d'un component :
@@ -253,6 +257,221 @@
           récupération des paramètres de routes : injection du router &
           <code>const id = +this.route.snapshot.params['id'];</code>
 
+        </li>
+      </ul>
+    </div>
+    <div class="chapter">
+      <h2> Observables</h2>
+      <ul>
+        <li>
+          librairie RxJs
+        </li>
+        <li>
+          émission de valeurs typées au cours du temps
+        </li>
+        <li>
+          <code>
+            <pre>
+              import { Component, OnInit } from '@angular/core';
+              import { interval, Observable } from 'rxjs';
+
+              @Component({
+                selector: 'app-root',
+                templateUrl: './app.component.html',
+                styleUrls: ['./app.component.scss']
+              })
+              export class AppComponent implements OnInit {
+
+                interval$!: Observable<number>;
+
+                ngOnInit() {
+                  this.interval$ = interval(1000);
+                }
+              }
+            </pre>
+          </code>
+        </li>
+        <li>
+          <code>
+            <pre>
+            &lt;h1&gt;{{ interval$ | async }}&lt;/h1&gt;
+            </pre>
+          </code>
+        </li>
+        <li>Opérators : permet de définir un pipeline de traitement sur une source observable</li>
+        <li><a href="https://www.learnrxjs.io/learn-rxjs/concepts/rxjs-primer">rxjs concept</a></li>
+        <li>
+          <code>
+            <pre>
+            this.interval$ = interval(1000).pipe(
+                filter(value => value % 3 === 0),
+                map(value => value % 2 === 0 ?
+                    `Je suis ${value} et je suis pair` :
+                    `Je suis ${value} et je suis impair`
+                ),
+                tap(text => this.logger(text))
+            );
+              </pre>
+          </code>
+        </li>
+        <li>
+          <ul>
+            <li>Pour souscrire : suscribe ou pipe async</li>
+            <li>Pour arreter de suivre les emissions d'un observables ( et le détruire ) : unsuscribe (sauf pour pipe async)</li>
+          </ul>
+
+        </li>
+      </ul>
+    </div>
+    <div class=" chapter">
+      <h2>Observables - haut niveau</h2>
+        <ul>
+          <li>
+            Un Observable haut niveau est un Observable qui souscrit à d'autres Observables.
+          </li>
+          <li>
+            L'Observable qui souscrit est appelé l'Observable extérieur, et les Observables qui sont souscrits sont appelés les Observables intérieurs.
+          </li>
+          <li>
+            Les opérateurs haut niveau servent à gérer les situations où une nouvelle émission arrive de l'Observable extérieur alors que la souscription précédente à l'Observable intérieur n'a pas encore complété :
+            <ul>
+              <li>
+                mergeMap  n'attend pas qu'un Observable intérieur complète pour souscrire au suivant – il assure la mise en parallèle.
+              </li>
+              <li>
+                concatMap  attend que l'Observable intérieur complète avant de souscrire au suivant – il assure la mise en série, même lorsque l'Observable extérieur émet plusieurs fois.
+              </li>
+              <li>
+                exhaustMap  ignore toute nouvelle émission de l'Observable extérieur tant qu'il y a une souscription active à un Observable intérieur.
+              </li>
+              <li>
+                Lorsque  switchMap  reçoit une nouvelle émission de l'Observable extérieur, s'il y a une souscription active à un Observable intérieur, il l'annule et souscrit au suivant.
+              </li>
+            </ul>
+          </li>
+      </ul>
+    </div>
+    <div class="chapter">
+      <h2> Observables : éviter les fuites de mémoire</h2>
+      <ul>
+        <li>
+          Un Observable souscrit qui ne complète pas risque de créer des fuites de mémoire.
+        </li>
+        <li>
+          Si un Observable est souscrit avec la méthode subscribe(), 2 possibilités :
+          <ul>
+            <li>
+              Si vous connaissez le nombre d'émissions qui vous intéressent, utilisez l'opérateur  take().
+            </li>
+            <li>
+              Si vous avez besoin de toutes les émissions durant la vie du component, utilisez le pattern Destroy Subject.
+            </li>
+            <li>
+              ngOnDestroy est un lifecycle hook qui est appelé lors de la destruction du component.
+            </li>
+            <li>
+              Un Subject est un Observable que l'on peut forcer à émettre avec sa méthodenext()  .
+            </li>
+            <li>
+              Les Observables souscrits avec le pipe  async  sont unsubscribe automatiquement par Angular lors de la destruction du component.
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div class="chapter">
+      <h2>template forms</h2>
+      <ul>
+        <li>
+          Ajoutez FormsModule aux  imports  de votre AppModule pour débloquer les formulaires template ;
+        </li>
+        <li>
+          Utilisez le two-way binding avec  [(ngModel)]  pour lier une variable au contenu d'un  input  ;
+        </li>
+        <li>
+          Liez votre méthode d'envoi de formulaire au bouton de type  submit  avec l'événement  ngSubmit  ;
+        </li>
+        <li>
+          Envoyez le formulaire en entier avec une référence locale à la directive  ngForm  et une méthode qui attend un argument de type  NgForm  – n'oubliez pas d'ajouter des attributs  name  à tous vos  input  !
+
+        </li>
+      </ul>
+    </div>
+    <div class="chapter">
+      <h2>Formulaire réactif</h2>
+      <ul>
+        <li>Ajoutez ReactiveFormsModule aux imports d'AppModule pour débloquer les formulaires réactifs </li>
+        <li>Utilisez FormBuilder pour générer un objet de type FormGroup</li>
+        <li> Liez le  form  du template au FormGroup avec  [formGroup], et les  input du formulaire aux contrôles du FormGroup avec  formControlName</li>
+        <li>Observez les changements de valeur du formulaire avec son ObservablevalueChanges</li>
+      </ul>
+    </div>
+    <div class="chapter">
+      <h2> Validators</h2>
+      <ul>
+        <li>Ajout des validators au formulaire réactif</li>
+        <li>Les validators sont ajouté lors de la configuration du FormGroup</li>
+        <li>Validators.required  rend un champ du formulaire requis.</li>
+        <li>Validators.pattern  vérifie que le contenu d'un champ correspond à une expression régulière.</li>
+      </ul>
+    </div>
+    <div class="chapter">
+      <h2> Requêtes simples</h2>
+      <ul>
+        <li>
+          Importez HttpClientModule et injectez HttpClient pour débloquer les requêtes HTTP.
+        </li>
+        <li>
+          Les requêtes HTTP en Angular sont des Observables qui :
+        </li>
+        <li>
+          émettent une fois et complètent lors d'une réponse positive ;
+        </li>
+        <li>
+          émettent une erreur (et sont donc détruits) lors d'une erreur serveur.
+        </li>
+        <li>
+          Les Observables générés par HttpClient envoient leur requête uniquement lorsqu'on souscrit à ces Observables ;
+        </li>
+        <li>
+          Souscrire à l'Observable HTTP avec le pipe  async  permet d'afficher facilement les données retournées par un serveur ;
+        </li>
+        <li>
+          La méthode  get  de HttpClient crée une requête GET à l'URL passée en argument.
+        </li>
+      </ul>
+    </div>
+    <div class="chapter">
+      <h2>Requetes composées</h2>
+      <ul>
+        <li>
+          Les méthodes  put()  et  post()  de HttpClient prennent l'URL de la requête comme premier argument, et le corps à envoyer comme deuxième argument ;
+        </li>
+        <li>
+          Vous créez une requête composée lorsque la réponse d'une requête est utilisée pour en créer une autre ;
+        </li>
+        <li>
+          Attention à l'asynchrone ! Si une action doit être effectuée après une requête, utilisez des opérateurs comme  tap()  dans le  pipe  de la requête ;
+        </li>
+        <li>
+          Quand une méthode de service génère une requête, le best practice est de retourner l'Observable et d'y souscrire depuis le component.
+        </li>
+      </ul>
+    </div>
+    <div class="chapter">
+      <h2>Sécuriser les requêtes avec Interceptor</h2>
+      <ul>
+        <li>
+          Un intercepteur HTTP intercepte toutes les requêtes HTTP envoyées par votre application pour effectuer des tâches requises, comme l'ajout d'un header d'autorisation.
+        </li>
+        <li>
+          Un intercepteur Angular est une classe  @Injectable  qui implémente l'interface HttpInterceptor.
+        </li>
+        <li>
+          La méthode  intercept()  clone la requête reçue en ajoutant les modifications requises au clone.
+        </li>
+        <li>
+          intercept()  passe ensuite la nouvelle requête à  next.handle()  pour lui permettre de continuer son chemin.
         </li>
       </ul>
     </div>

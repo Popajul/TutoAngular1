@@ -1,2 +1,2 @@
-<app-face-snap [faceSnap]="faceSnap"></app-face-snap>
+<app-face-snap *ngIf="faceSnap$ | async as faceSnap" [faceSnap] = "faceSnap"></app-face-snap>
 
