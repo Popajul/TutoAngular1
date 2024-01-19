@@ -3,12 +3,14 @@
     body {
       font-size: 18px;
       background-color: black;
-      h1 {
-        text-align: center;
-      }
-      a {
-        color: black;
-      }
+      
+    }
+    body h1 {
+      text-align: center;
+    }
+
+    body a {
+      color: black;
     }
       .container {
         background-color: white;
@@ -27,26 +29,28 @@
         box-shadow: lightgrey 4px 4px 7px;
         border: 4px solid lightgrey;
 
-        h2,h3 {
-          text-align: center;
-        }
-
-        li {
-          margin: 20px 10px
-        }
-
-        code, pre, code pre {
-          background-color: beige;
-          white-space: pre-line;
-          word-wrap: break-word
-        }
+        
       }
+    .chapter{
+        h2, h3 {
+      text-align: center;
+      }
+      li {
+        margin: 20px 10px
+      }
+      code, pre, code pre {
+        background-color: beige;
+        white-space: pre-line;
+        word-wrap: break-word
+      }
+    }
     
   </style>
+  <title>Angular</title>
 </head>
 <body>
   <div class="container">
-    <h1><a href="https://openclassrooms.com/fr/courses/7471261-debutez-avec-angular">Angular(1)</a></h1>
+    <h1><a href="https://openclassrooms.com/fr/courses/7471261-debutez-avec-angular">Angular</a></h1>
     <div class="chapter">
 
       <h2> Installer les dépendances</h2>
@@ -472,6 +476,66 @@
         </li>
         <li>
           intercept()  passe ensuite la nouvelle requête à  next.handle()  pour lui permettre de continuer son chemin.
+        </li>
+      </ul>
+    </div>
+    <div class="chapter">
+      <h2>Les modules</h2>
+      <ul>
+        <li>
+          Il y a trois types principaux de modules :
+          <ul>
+            <li>
+              feature modules – regroupent les éléments d'un feature de l'application ;
+            </li>
+            <li>
+              core modules – regroupent les éléments qui sont importés une seule fois dans l'application ;
+            </li>
+            <li>
+              shared modules – regroupent les éléments qui sont importés à plusieurs endroits de l'application.
+            </li>
+          </ul>
+        </li>
+        <li>
+          Un module doit importer tout ce dont il a besoin pour générer ses enfants. Par exemple, si un component qu'il déclare contient un formulaire réactif, il devra importer ReactiveFormsModule ;
+        </li>
+        <li>
+          Si un component déclaré par un module enfant est utilisé dans un module parent, le module enfant doit exporter ce component.
+        </li>
+      </ul>
+    </div>
+    <div class="chapter">
+      <h2>Lazy loading</h2>
+      <ul>
+        <li>
+          Le lazy loading génère un fichier JS séparé, pour un module qui n'est chargé que si l'utilisateur visite la route correspondante ;
+        </li>
+        <li>
+          Pour implémenter le lazy loading, le module en question doit s'occuper de tout son routing ;
+        </li>
+        <li>
+          Le routing est ensuite délégué par le routeur principal avec une syntaxe particulière :
+          <code><pre>
+           { path: 'module-route', loadChildren: () => import('path/to/module').then(m => m.NameOfModule) }
+          </pre></code>
+        </li>
+        <li>Attention à l'ordre des routes dans les routing modules !</li>
+      </ul>
+    </div>
+    <div class="chapter">
+      <h2>Gards</h2>
+      <ul>
+        <li>
+          Un guard est un outil de routing qui empêche des utilisateurs non autorisés d'accéder aux routes protégées de l'application ;
+        </li>
+        <li>
+          Un guard est une classe  @Injectable  qui implémente l'interface CanActivate ;
+        </li>
+        <li>
+          La méthode  canActivate()  retourne  true  pour laisser continuer la navigation, et  false  pour l'empêcher ;
+        </li>
+        <li>
+          On passe ensuite le guard à la configuration de la route dans le tableau canActivate.
         </li>
       </ul>
     </div>

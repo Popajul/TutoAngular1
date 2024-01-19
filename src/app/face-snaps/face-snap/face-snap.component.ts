@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { FaceSnap } from "../models/face-snap-model";
-import { FaceSnapsService } from "../services/face-snaps.service";
+import { FaceSnap } from "../../core/models/face-snap-model";
+import { FaceSnapsService } from "../../core/services/face-snaps.service";
 import { Router } from "@angular/router";
 import { Observable, of, tap } from "rxjs";
 
@@ -29,7 +29,7 @@ export class FaceSnapComponent implements OnInit {
             this.faceSnap$ = this.faceSnapsService
                 .snapFaceSnapById(faceSnapId, "unsnap")
                 .pipe(
-                    tap((faceSnap) => {
+                    tap(() => {
                         this.snapButtonText = "Oh Snap!";
                         this.snapped = false;
                     })
@@ -38,7 +38,7 @@ export class FaceSnapComponent implements OnInit {
             this.faceSnap$ = this.faceSnapsService
                 .snapFaceSnapById(faceSnapId, "snap")
                 .pipe(
-                    tap((faceSnap) => {
+                    tap(() => {
                         this.snapButtonText = "Oops un Snap!";
                         this.snapped = true;
                     })
